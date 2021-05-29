@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\Users\\Swapneel\\Desktop\\2ndKibo-RPC_SampleAPK\\SampleApk\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi\\ic_launcher.png",
+        "source": "C:\\Users\\Swapneel\\Desktop\\2ndKibo-RPC_SampleAPK\\SampleApk\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Swapneel\\Desktop\\2ndKibo-RPC_SampleAPK\\SampleApk\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi\\ic_launcher_round.png",
+        "source": "C:\\Users\\Swapneel\\Desktop\\2ndKibo-RPC_SampleAPK\\SampleApk\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
+    }
+]
