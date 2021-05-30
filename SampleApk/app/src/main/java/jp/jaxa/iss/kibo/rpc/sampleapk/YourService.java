@@ -1,6 +1,7 @@
 package jp.jaxa.iss.kibo.rpc.sampleapk;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
 
@@ -36,8 +37,9 @@ public class YourService extends KiboRpcService {
         api.flashlightControlFront(0.025f);
         //Read QR code from point-A
         Bitmap image = api.getBitmapNavCam();
+        Bitmap cropped_image = Bitmap.createBitmap(image,0,0,960,960);
         api.flashlightControlFront(0);
-        String content = readQr(image);
+        String content = readQr(cropped_image);
 
         api.sendDiscoveredQR(content);
     }
@@ -84,13 +86,9 @@ public class YourService extends KiboRpcService {
             try {
                 com.google.zxing.Result result = reader.decode(binaryBitmap);
                 qrcontent = result.getText();
-                Log.d("readQR",result);
-            } catch(NotFoundException e) {
-                e.printStackTrace();
-            } catch (ChecksumException e) {
-                e.printStackTrace();
-            } catch (FormatException e) {
-                e.printStackTrace();
+                Log.d("readQR",qrcontent);
+            } catch(Exception e) {
+                Log.d("readQR", e.getLocalizedMessage());
             }
             return qrcontent;
         }
