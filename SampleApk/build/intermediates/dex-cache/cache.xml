@@ -19,14 +19,5 @@
         sha1="d0c375d9be8682ad66b1dcc36f23e7042ebab943">
         <dex dex="C:\Users\Swapneel\Desktop\2ndKibo-RPC_SampleAPK\SampleApk\app\build\intermediates\transforms\dex\debug\folders\1000\10\api-1.0-SNAPSHOT_ee733a46cc70460284b4781427ec9275177efe20\classes.dex" />
     </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Swapneel\.gradle\caches\modules-2\files-2.1\com.google.zxing\core\3.4.0\5264296c46634347890ec9250bc65f14b7362bf8\core-3.4.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="26.0.2"
-        sha1="5264296c46634347890ec9250bc65f14b7362bf8">
-        <dex dex="C:\Users\Swapneel\Desktop\2ndKibo-RPC_SampleAPK\SampleApk\app\build\intermediates\transforms\dex\debug\folders\1000\10\core-3.4.0_19bcb1ada4756aacde3bee84718eb3d297309883\classes.dex" />
-    </item>
 
 </items>
