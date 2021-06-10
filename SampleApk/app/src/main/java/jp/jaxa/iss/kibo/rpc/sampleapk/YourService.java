@@ -68,7 +68,7 @@ public class YourService extends KiboRpcService {
     }
 
     private void getQR(){
-        api.flashlightControlFront(0.025f);
+        api.flashlightControlFront(0.2f);
         try {
             java.lang.Thread.sleep(2000);
         } catch(InterruptedException ex){
@@ -83,29 +83,28 @@ public class YourService extends KiboRpcService {
 
     private String readQR(Bitmap bitmap){
         String result = "error";
-        double n = 0.5;
-        double m = 0.5;
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        int newWidth = (int) (width * n);
-        int newHeight = (int) (height * n);
-        int startX = (width - newWidth) / 2;
-        int startY = (height - newHeight) / 2;
-        Bitmap bitmapTriming = createBitmap(bitmap, startX, startY, newWidth, newHeight);
-        Bitmap bitmapResize = Bitmap.createScaledBitmap(bitmapTriming, (int) (newWidth * m), (int) (newHeight * m), true);
-        width = bitmapResize.getWidth();
-        height = bitmapResize.getHeight();
+//        double n = 0.5;
+//        double m = 0.5;
+//        int width = bitmap.getWidth();
+//        int height = bitmap.getHeight();
+//        int newWidth = (int) (width * n);
+//        int newHeight = (int) (height * n);
+//        int startX = width/4;
+//        int startY =height/4;
+//        Bitmap bitmapTriming = createBitmap(bitmap, startX, startY, newWidth, newHeight);
+//        Bitmap bitmapResize = Bitmap.createScaledBitmap(bitmapTriming, (int) (newWidth * m), (int) (newHeight * m), true);
+        Bitmap bitmapResize = Bitmap.createBitmap(bitmap,0,0,960,960);
+        int width = bitmapResize.getWidth();
+        int height = bitmapResize.getHeight();
         int[] pixels = new int[width * height];
         bitmapResize.getPixels(pixels, 0, width, 0, 0, width, height);
         try {
             LuminanceSource source = new RGBLuminanceSource(width, height, pixels);
             BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
             Reader reader = new QRCodeReader();
-            Map<DecodeHintType, Object> tmpHintsMap;
-            tmpHintsMap = new EnumMap<DecodeHintType, Object>(DecodeHintType.class);
-            tmpHintsMap.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
-            com.google.zxing.Result decodeResult = reader.decode(binaryBitmap, tmpHintsMap);
+            com.google.zxing.Result decodeResult = reader.decode(binaryBitmap);
             result = decodeResult.getText();
+            Log.d("QR content",result);
         } catch (Exception e) {
         }
         return result;
