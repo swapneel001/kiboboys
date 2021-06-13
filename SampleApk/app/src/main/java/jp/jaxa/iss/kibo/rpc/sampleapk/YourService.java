@@ -70,7 +70,7 @@ public class YourService extends KiboRpcService {
     private void getQR(){
         api.flashlightControlFront(0.2f);
         try {
-            java.lang.Thread.sleep(2000);
+            java.lang.Thread.sleep(1000);
         } catch(InterruptedException ex){
             java.lang.Thread.currentThread().interrupt();
         }
