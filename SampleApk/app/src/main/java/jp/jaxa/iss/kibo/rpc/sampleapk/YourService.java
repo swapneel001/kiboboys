@@ -37,7 +37,46 @@ public class YourService extends KiboRpcService {
         api.startMission();
         // move to Point A
         moveToWrapper(11.21, -9.8, 4.79, 0, 0, -0.707, 0.707);
-        getQR();
+
+        String[] stringArray1 = getQR();
+        String pattern = stringArray1[0];
+        double pattern1 = Double.parseDouble(pattern);
+        double x_Adash = Double.parseDouble(stringArray1[1]);
+        double y_Adash = Double.parseDouble(stringArray1[2]);
+        double z_Adash = Double.parseDouble(stringArray1[3]);
+
+        if (pattern1==1.0 || pattern1==2.0 || pattern1==8.0)
+        {
+            moveToWrapper(x_Adash,y_Adash,z_Adash, 0.0, 0.0, -0.707, 0.707);
+
+        }
+
+
+        if (pattern1==3.0 || pattern1==4.0)
+        {
+            moveToWrapper(x_Adash,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(x_Adash,-9.8,z_Adash, 0.0, 0.0, -0.707, 0.707);
+        }
+
+        if (pattern1==5.0 || pattern1==6.0)
+        {
+            double x_KOZL = x_Adash - 0.22;
+            moveToWrapper(x_KOZL,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(x_KOZL,-9.8,z_Adash, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(x_Adash,-9.8,z_Adash, 0.0, 0.0, -0.707, 0.707);
+
+
+
+        }
+        if (pattern1==7.0)
+        {
+            double x_KOZR = x_Adash;
+            moveToWrapper(x_KOZR,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(x_KOZR,-9.8,z_Adash, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(x_Adash,-9.8,z_Adash, 0.0, 0.0, -0.707, 0.707);
+        }
+
+
     }
     @Override
     protected void runPlan2(){
@@ -67,10 +106,10 @@ public class YourService extends KiboRpcService {
         }
     }
 
-    private void getQR(){
+    private String[] getQR(){
         api.flashlightControlFront(0.2f);
         try {
-            java.lang.Thread.sleep(1000);
+            java.lang.Thread.sleep(2000);
         } catch(InterruptedException ex){
             java.lang.Thread.currentThread().interrupt();
         }
@@ -79,6 +118,32 @@ public class YourService extends KiboRpcService {
         api.flashlightControlFront(0);
         String QRCodeString = readQR(bitmap);
         api.sendDiscoveredQR(QRCodeString);
+
+        String[] stringArray = new String[4];
+        int element = 0;
+        for (int i = 1; i < QRCodeString.length();++i)
+        {
+            if (QRCodeString.charAt(i)==':')
+            {
+                int condition= 0;
+                int initial= i+1;
+
+                for (int j=i;condition<1;++j)
+                {
+                    if (QRCodeString.charAt(j)==',')
+                    {
+                        stringArray[element]= QRCodeString.substring(initial,j-1);
+                        condition=1;
+                        element++;
+
+                    }
+                }
+
+            }
+        }
+
+        return stringArray;
+
     }
 
     private String readQR(Bitmap bitmap){
