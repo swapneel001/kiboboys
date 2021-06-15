@@ -1,24 +1,3 @@
-package jp.jaxa.iss.kibo.rpc.sampleapk;
-
-import android.graphics.Bitmap;
-import android.util.Log;
-import static android.graphics.Bitmap.createBitmap;
-
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.ChecksumException;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.RGBLuminanceSource;
-import com.google.zxing.Reader;
-import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.qrcode.QRCodeReader;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
 
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 
@@ -38,42 +17,42 @@ public class YourService extends KiboRpcService {
         // move to Point A
         moveToWrapper(11.21, -9.8, 4.79, 0, 0, -0.707, 0.707);
 
-        String[] stringArray1 = getQR();
-        String pattern = stringArray1[0];
-        double pattern1 = Double.parseDouble(pattern);
-        double x_Adash = Double.parseDouble(stringArray1[1]);
-        double y_Adash = Double.parseDouble(stringArray1[2]);
-        double z_Adash = Double.parseDouble(stringArray1[3]);
+        String qrcode = getQR();
+        String[] splt = qrcode.split("[\"{}:,pxyz]+");
+        int ap = Integer.parseInt(splt[1]);
+        double ax = Double.parseDouble(splt[2]);
+        double ay = Double.parseDouble(splt[3]);
+        double az = Double.parseDouble(splt[4]);
 
-        if (pattern1==1.0 || pattern1==2.0 || pattern1==8.0)
+        if (ap==1 || ap==2 || ap==8)
         {
-            moveToWrapper(x_Adash,y_Adash,z_Adash, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(ax,ay,az, 0.0, 0.0, -0.707, 0.707);
 
         }
 
 
-        if (pattern1==3.0 || pattern1==4.0)
+        if (ap==3 || ap==4)
         {
-            moveToWrapper(x_Adash,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
-            moveToWrapper(x_Adash,-9.8,z_Adash, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(ax,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);
         }
 
-        if (pattern1==5.0 || pattern1==6.0)
+        if (ap==5 || ap==6)
         {
-            double x_KOZL = x_Adash - 0.22;
+            double x_KOZL = ax - 0.22;
             moveToWrapper(x_KOZL,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
-            moveToWrapper(x_KOZL,-9.8,z_Adash, 0.0, 0.0, -0.707, 0.707);
-            moveToWrapper(x_Adash,-9.8,z_Adash, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(x_KOZL,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);
 
 
 
         }
-        if (pattern1==7.0)
+        if (ap==7)
         {
-            double x_KOZR = x_Adash;
+            double x_KOZR = ax;
             moveToWrapper(x_KOZR,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
-            moveToWrapper(x_KOZR,-9.8,z_Adash, 0.0, 0.0, -0.707, 0.707);
-            moveToWrapper(x_Adash,-9.8,z_Adash, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(x_KOZR,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);
         }
 
 
@@ -106,7 +85,7 @@ public class YourService extends KiboRpcService {
         }
     }
 
-    private String[] getQR(){
+    private String getQR(){
         api.flashlightControlFront(0.2f);
         try {
             java.lang.Thread.sleep(2000);
@@ -119,30 +98,7 @@ public class YourService extends KiboRpcService {
         String QRCodeString = readQR(bitmap);
         api.sendDiscoveredQR(QRCodeString);
 
-        String[] stringArray = new String[4];
-        int element = 0;
-        for (int i = 1; i < QRCodeString.length();++i)
-        {
-            if (QRCodeString.charAt(i)==':')
-            {
-                int condition= 0;
-                int initial= i+1;
-
-                for (int j=i;condition<1;++j)
-                {
-                    if (QRCodeString.charAt(j)==',')
-                    {
-                        stringArray[element]= QRCodeString.substring(initial,j-1);
-                        condition=1;
-                        element++;
-
-                    }
-                }
-
-            }
-        }
-
-        return stringArray;
+        return QRCodeString;
 
     }
 
