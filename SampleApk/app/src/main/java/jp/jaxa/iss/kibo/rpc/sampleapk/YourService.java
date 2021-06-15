@@ -1,3 +1,24 @@
+package jp.jaxa.iss.kibo.rpc.sampleapk;
+
+import android.graphics.Bitmap;
+import android.util.Log;
+import static android.graphics.Bitmap.createBitmap;
+
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.ChecksumException;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.Reader;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 
@@ -24,6 +45,10 @@ public class YourService extends KiboRpcService {
         double ay = Double.parseDouble(splt[3]);
         double az = Double.parseDouble(splt[4]);
 
+        double x = 11.21;
+        double y = -9.8;
+        double z = 4.79;
+
         if (ap==1 || ap==2 || ap==8)
         {
             moveToWrapper(ax,ay,az, 0.0, 0.0, -0.707, 0.707);
@@ -31,29 +56,75 @@ public class YourService extends KiboRpcService {
         }
 
 
-        if (ap==3 || ap==4)
-        {
-            moveToWrapper(ax,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
-            moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+        if (ap==3){
+            double k=(ay+9.8)/(ax-11.21);
+            int collision=0;
+            for (z=az-0.22;z<=az+0.005;z+=0.01){
+                if ((ax+0.155<=x)  && (x<=ax+0.38) && (x== 11.21+k*(y+9.8))){
+                    collision+=1;}}
+            if (collision!=0){
+                moveToWrapper(ax+0.155,y,z,0,0,-0.707,0.707);
+                moveToWrapper (ax,ay,az,0,0,-0.707,0.707);}
+            else
+                moveToWrapper (ax,ay,az,0,0, -0.707,0.707);
         }
 
-        if (ap==5 || ap==6)
-        {
-            double x_KOZL = ax - 0.22;
-            moveToWrapper(x_KOZL,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
-            moveToWrapper(x_KOZL,-9.8,az, 0.0, 0.0, -0.707, 0.707);
-            moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);
-
-
-
+        if (ap==4){
+            double k=(ay+9.8)/(ax-11.21);
+            int collision=0;
+            for (z=az-0.22;z<=az+0.005;z+=0.01){
+                if ((ax+0.08<=x)  && (x<=ax+0.38) && (x== 11.21+k*(y+9.8))){
+                    collision+=1;}}
+            if (collision!=0){
+                moveToWrapper(ax+0.155,y,z,0,0,-0.707,0.707);
+                moveToWrapper (ax,ay,az,0,0,-0.707,0.707);}
+            else
+                moveToWrapper (ax,ay,az,0,0, -0.707,0.707);
         }
+
+        if (ap==5){
+            x=(4.1025+0.22*az-az*ax+1.0682*ax*ax-7.42*ax)/(1.0682*ax-az-6.96);
+            z=az+1.0682*(x-ax);
+            if ((x>=10.71) && (x<=11.55) && (z>=4.32) && (z<=5.57)){
+                moveToWrapper (x,ay,z,0,0, -0.707,0.707);
+                moveToWrapper (ax,ay,az,0,0, -0.707,0.707);
+            }
+            else {
+                double x_KOZL = ax - 0.22;
+                moveToWrapper(x_KOZL,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
+                moveToWrapper(x_KOZL,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+                moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);}
+        }
+
+        if (ap==6){
+            x=(6.2125+12.78*ax-0.7272*ax*ax-az*ax-0.22*az)/(13.24-az-0.7272*ax);
+            z=az-0.7272*(x-ax);
+            if ((x>=10.71) && (x<=11.55) && (z>=4.32) && (z<=5.57)){
+                moveToWrapper (x,ay,z,0,0, -0.707,0.707);
+                moveToWrapper (ax,ay,az,0,0, -0.707,0.707);
+            }
+            else {
+                double x_KOZL = ax - 0.22;
+                moveToWrapper(x_KOZL,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
+                moveToWrapper(x_KOZL,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+                moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);}
+        }
+
         if (ap==7)
         {
-            double x_KOZR = ax;
-            moveToWrapper(x_KOZR,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
-            moveToWrapper(x_KOZR,-9.8,az, 0.0, 0.0, -0.707, 0.707);
-            moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+            x=(63.6425-0.218*az-1.0682*ax*ax-ax*az+11.7395*ax)/(16.9595-1.0682*ax-az);
+            z=az-1.0682*(x-ax);
+            if ((x>=10.71) && (x<=11.55) && (z>=4.32) && (z<=5.57)){
+                moveToWrapper (x,ay,z,0,0, -0.707,0.707);
+                moveToWrapper (ax,ay,az,0,0, -0.707,0.707);
+            }
+            else {
+                double x_KOZR = ax;
+                moveToWrapper(x_KOZR,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
+                moveToWrapper(x_KOZR,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+                moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);}
         }
+
 
 
     }
