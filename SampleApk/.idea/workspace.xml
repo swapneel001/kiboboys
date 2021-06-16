@@ -5,8 +5,11 @@
       <config />
     </shared>
   </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5d61d22-d508-44b6-92be-9b6ae74d024f" name="Default Changelist" comment="">
+    <list default="true" id="a5d61d22-d508-44b6-92be-9b6ae74d024f" name="Default Changelist" comment="960x960 image with high brightness">
       <change beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" afterDir="false" />
@@ -21,8 +24,6 @@
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/file-input-save-data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/file-input-save-data.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dex/debug/folders/1000/1/debug_458219559fbd28c68dfe77f70f5d8f073e2d5adb/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dex/debug/folders/1000/1/debug_458219559fbd28c68dfe77f70f5d8f073e2d5adb/classes.dex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/jp/jaxa/iss/kibo/rpc/sampleapk/YourService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/jp/jaxa/iss/kibo/rpc/sampleapk/YourService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/android-profile/profile-2021-06-05-17-12-09-720.rawproto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/android-profile/profile-2021-06-05-17-12-18-108.rawproto" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,8 +48,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/jaxa/iss/kibo/rpc/sampleapk/YourService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="70" column="39" selection-start-line="70" selection-start-column="39" selection-end-line="70" selection-end-column="39" />
+            <state relative-caret-position="332">
+              <caret line="164" column="9" selection-start-line="164" selection-start-column="9" selection-end-line="164" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -88,10 +89,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-12" />
-    <option name="y" value="-12" />
-    <option name="width" value="2586" />
-    <option name="height" value="1546" />
+    <option name="x" value="148" />
+    <option name="y" value="-14" />
+    <option name="width" value="2326" />
+    <option name="height" value="1138" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -99,7 +100,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -112,6 +112,7 @@
         </subPane>
       </pane>
       <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -207,6 +208,14 @@
       <option name="presentableId" value="Default" />
       <updated>1622021436211</updated>
     </task>
+    <task id="LOCAL-00001" summary="960x960 image with high brightness">
+      <created>1623336386513</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1623336386513</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -214,7 +223,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49898168" visible="true" weight="0.2194332" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.49898168" visible="true" weight="0.32307693" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Build Variants" order="4" sideWeight="0.50101835" side_tool="true" weight="0.2194332" />
@@ -222,13 +231,16 @@
       <window_info id="Designer" order="6" />
       <window_info id="Resources Explorer" order="7" />
       <window_info id="Capture Tool" order="8" />
-      <window_info anchor="bottom" id="Version Control" order="0" />
-      <window_info anchor="bottom" id="Logcat" order="1" />
+      <window_info anchor="bottom" id="Version Control" order="0" weight="0.32970452" />
+      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.49959514" weight="0.32970452" />
       <window_info anchor="bottom" id="TODO" order="2" />
-      <window_info anchor="bottom" id="Terminal" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.50040483" side_tool="true" weight="0.19440125" />
-      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.49959514" visible="true" weight="0.23639192" />
+      <window_info anchor="bottom" id="Terminal" order="3" sideWeight="0.49959514" weight="0.32970452" />
+      <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.50201344" side_tool="true" weight="0.21529745" />
+      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.49798658" visible="true" weight="0.2503888" />
       <window_info anchor="bottom" id="Android Profiler" order="6" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="7" />
+      <window_info anchor="bottom" id="Debug" order="8" />
+      <window_info anchor="bottom" id="Messages" order="9" sideWeight="0.49959514" weight="0.32970452" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
       <window_info anchor="right" id="Gradle" order="2" />
@@ -236,6 +248,10 @@
       <window_info anchor="right" id="Palette&#9;" order="4" />
       <window_info anchor="right" id="Preview" order="5" weight="0.3295302" />
     </layout>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="960x960 image with high brightness" />
+    <option name="LAST_COMMIT_MESSAGE" value="960x960 image with high brightness" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/gradle.properties">
@@ -245,8 +261,8 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor" />
+      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor" />
@@ -261,8 +277,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/jp/jaxa/iss/kibo/rpc/sampleapk/YourService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="70" column="39" selection-start-line="70" selection-start-column="39" selection-end-line="70" selection-end-column="39" />
+        <state relative-caret-position="332">
+          <caret line="164" column="9" selection-start-line="164" selection-start-column="9" selection-end-line="164" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
