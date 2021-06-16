@@ -14,6 +14,14 @@ import com.google.zxing.Reader;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
+import org.opencv.aruco.Aruco;
+import org.opencv.aruco.DetectorParameters;
+import org.opencv.aruco.Dictionary;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -37,7 +45,57 @@ public class YourService extends KiboRpcService {
         api.startMission();
         // move to Point A
         moveToWrapper(11.21, -9.8, 4.79, 0, 0, -0.707, 0.707);
-        getQR();
+
+        String qrcode = getQR();
+        String[] splt = qrcode.split("[\"{}:,pxyz]+");
+        int ap = Integer.parseInt(splt[1]);
+        double ax = Double.parseDouble(splt[2]);
+        double ay = Double.parseDouble(splt[3]);
+        double az = Double.parseDouble(splt[4]);
+
+        //Log.d("Pattern", int.tostring(ap));
+        Log.d("x_Adash", "Value: " + Double.toString(ax));
+        Log.d("y_Adash", "Value: " + Double.toString(ay));
+        Log.d("z_Adash", "Value: " + Double.toString(az));
+
+
+
+
+
+
+
+        if (ap==1 || ap==2 || ap==8)
+        {
+            moveToWrapper(ax,ay,az, 0.0, 0.0, -0.707, 0.707);
+
+        }
+
+
+        if (ap==3 || ap==4)
+        {
+            moveToWrapper(ax,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+        }
+
+        if (ap==5 || ap==6)
+        {
+            double x_KOZL = ax - 0.22;
+            moveToWrapper(x_KOZL,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(x_KOZL,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+
+
+
+        }
+        if (ap==7)
+        {
+            double x_KOZR = ax;
+            moveToWrapper(x_KOZR,-9.8,4.79, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(x_KOZR,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+            moveToWrapper(ax,-9.8,az, 0.0, 0.0, -0.707, 0.707);
+        }
+
+
     }
     @Override
     protected void runPlan2(){
@@ -67,10 +125,10 @@ public class YourService extends KiboRpcService {
         }
     }
 
-    private void getQR(){
-        api.flashlightControlFront(0.025f);
+    private String getQR(){
+        api.flashlightControlFront(0.2f);
         try {
-            java.lang.Thread.sleep(2000);
+            java.lang.Thread.sleep(1000);
         } catch(InterruptedException ex){
             java.lang.Thread.currentThread().interrupt();
         }
@@ -79,36 +137,57 @@ public class YourService extends KiboRpcService {
         api.flashlightControlFront(0);
         String QRCodeString = readQR(bitmap);
         api.sendDiscoveredQR(QRCodeString);
+
+        return QRCodeString;
+
     }
 
     private String readQR(Bitmap bitmap){
         String result = "error";
-        double n = 0.5;
-        double m = 0.5;
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        int newWidth = (int) (width * n);
-        int newHeight = (int) (height * n);
-        int startX = (width - newWidth) / 2;
-        int startY = (height - newHeight) / 2;
-        Bitmap bitmapTriming = createBitmap(bitmap, startX, startY, newWidth, newHeight);
-        Bitmap bitmapResize = Bitmap.createScaledBitmap(bitmapTriming, (int) (newWidth * m), (int) (newHeight * m), true);
-        width = bitmapResize.getWidth();
-        height = bitmapResize.getHeight();
+//        double n = 0.5;
+//        double m = 0.5;
+//        int width = bitmap.getWidth();
+//        int height = bitmap.getHeight();
+//        int newWidth = (int) (width * n);
+//        int newHeight = (int) (height * n);
+//        int startX = width/4;
+//        int startY =height/4;
+//        Bitmap bitmapTriming = createBitmap(bitmap, startX, startY, newWidth, newHeight);
+//        Bitmap bitmapResize = Bitmap.createScaledBitmap(bitmapTriming, (int) (newWidth * m), (int) (newHeight * m), true);
+        Bitmap bitmapResize = Bitmap.createBitmap(bitmap,0,0,960,960);
+        int width = bitmapResize.getWidth();
+        int height = bitmapResize.getHeight();
         int[] pixels = new int[width * height];
         bitmapResize.getPixels(pixels, 0, width, 0, 0, width, height);
         try {
             LuminanceSource source = new RGBLuminanceSource(width, height, pixels);
             BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
             Reader reader = new QRCodeReader();
-            Map<DecodeHintType, Object> tmpHintsMap;
-            tmpHintsMap = new EnumMap<DecodeHintType, Object>(DecodeHintType.class);
-            tmpHintsMap.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
-            com.google.zxing.Result decodeResult = reader.decode(binaryBitmap, tmpHintsMap);
+            com.google.zxing.Result decodeResult = reader.decode(binaryBitmap);
             result = decodeResult.getText();
+            Log.d("QR content",result);
         } catch (Exception e) {
         }
         return result;
     }
+    private Boolean readAR(Aruco ARtag){
+        Dictionary dictionary = Aruco.getPredefinedDictionary(Aruco.DICT_5X5_250);
+        Mat inputImage = new Mat();
+        List<Mat> corners = new ArrayList<>();
+        Mat markerIds = new Mat();
+        DetectorParameters parameters = DetectorParameters.create();
+        Imgproc.cvtColor(inputImage, inputImage, Imgproc.COLOR_BGR2GRAY);
+        Aruco.detectMarkers(inputImage, dictionary, corners, markerIds, parameters);
+
+       
+        String markerID = String.valueOf((int)(markerIds.get(0, 0)[0]));
+
+
+        Log.d("Marker ID", markerID);
+       
+       
+        return true;
+    }
+
 }
 
