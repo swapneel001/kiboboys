@@ -14,6 +14,13 @@ import com.google.zxing.Reader;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
+import org.opencv.aruco.Aruco;
+import org.opencv.aruco.DetectorParameters;
+import org.opencv.aruco.Dictionary;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
@@ -200,6 +207,24 @@ public class YourService extends KiboRpcService {
         } catch (Exception e) {
         }
         return result;
+    }
+    private Boolean readAR(Aruco ARtag){
+        Dictionary dictionary = Aruco.getPredefinedDictionary(Aruco.DICT_5X5_250);
+        Mat inputImage = new Mat();
+        List<Mat> corners = new ArrayList<>();
+        Mat markerIds = new Mat();
+        DetectorParameters parameters = DetectorParameters.create();
+        Imgproc.cvtColor(inputImage, inputImage, Imgproc.COLOR_BGR2GRAY);
+        Aruco.detectMarkers(inputImage, dictionary, corners, markerIds, parameters);
+
+       
+        String markerID = String.valueOf((int)(markerIds.get(0, 0)[0]));
+
+
+        Log.d("Marker ID", markerID);
+       
+       
+        return true;
     }
 }
 
