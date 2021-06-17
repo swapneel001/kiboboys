@@ -163,6 +163,15 @@ public class YourService extends KiboRpcService {
         }else{
             Log.d("AR[status]:", "Detected");
         }
+
+        double ar_width = corners.get(0).get(0,2)[0]-corners.get(0).get(0,0)[0];
+        double ar_height = corners.get(0).get(0,2)[1] - corners.get(0).get(0,0)[1];
+        double AR_center_x = corners.get(0).get(0,0)[0] + (ar_width / 2);
+        double AR_center_z = corners.get(0).get(0,0)[1] + (ar_height / 2);
+        Log.d("AR width",Double.toString(ar_width));
+        Log.d("AR height",Double.toString(ar_height));
+        Log.d("AR center x ",Double.toString(AR_center_x));
+        Log.d("AR center z",Double.toString(AR_center_z));
         return true;
     }
 
