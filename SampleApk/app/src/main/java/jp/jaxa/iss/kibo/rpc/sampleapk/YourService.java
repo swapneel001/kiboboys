@@ -136,8 +136,33 @@ public class YourService extends KiboRpcService {
 
     }
     @Override
-    protected void runPlan2(){
-        // write here your plan 2
+    protected void runPlan2()
+    {
+        if ((pattern1==1.0)||(pattern1==8.0))
+        {
+            
+            moveToWrapper(11.21,-9.8,4.79,0,0,-0.707,0.707);
+            moveToWrapper (10.29,-8.9,4.79,0,0,-0.707,0.707);}
+            moveToWrapper (10.6,-8.0,4.5,0,0, -0.707,0.707);
+        }
+
+        if( (pattern1==2.0)|| (pattern1==3.0)|| (pattern4==5.0)|| (pattern4==1.0)|| (pattern1==6.0))
+        {
+            moveToWrapper (10.29,-8.9,az,0,0,-0.707,0.707);}
+            moveToWrapper (10.6,-8.0,4.5,0,0, -0.707,0.707);
+        }
+
+
+        if (pattern1==7.0)
+        {
+            x=(63.6425-0.218*az-1.0682*ax*ax-ax*az+11.7395*ax)/(16.9595-1.0682*ax-az);
+            z=az-1.0682*(x-ax);
+        
+            moveToWrapper(x,ay,z,0,0,-0.707,0.707);
+            moveToWrapper(11.21,-9.8,4.79,0,0,-0.707,0.707);}
+            moveToWrapper(10.29,-8.9,4.79,0,0,-0.707,0.707);}
+            moveToWrapper(10.6,-8.0,4.5,0,0, -0.707,0.707);
+        }// write here your plan 2
     }
 
     @Override
