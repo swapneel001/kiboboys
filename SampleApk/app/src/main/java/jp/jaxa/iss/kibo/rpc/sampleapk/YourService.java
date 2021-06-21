@@ -1,7 +1,9 @@
 package jp.jaxa.iss.kibo.rpc.sampleapk;
 
+import java.util.Arrays;
 import android.graphics.Bitmap;
 import android.util.Log;
+import java.util.Vector;
 import static android.graphics.Bitmap.createBitmap;
 
 import com.google.zxing.BinaryBitmap;
@@ -69,7 +71,10 @@ public class YourService extends KiboRpcService {
         Log.d("z_Adash", "Value: " + Double.toString(az));
 
         movetoAdash(ap,ax,ay,az);
-        readAR();
+
+        arEvent(ay);
+
+
 
 
     }
@@ -141,7 +146,94 @@ public class YourService extends KiboRpcService {
         }
         return result;
     }
-    private Boolean readAR(){
+
+    private void arEvent(double ay){
+        double[] forward = readAR(ay);
+        double[] globalup = {0,1,0};
+
+        double[] right = crossProduct(forward,globalup);
+        double[] up = crossProduct(right,forward);
+
+        Quaternion finalquaternion = finalquaternionRotation(forward,up);
+        Point goal = new Point(0,0,0);
+        api.relativeMoveTo(goal,finalquaternion,true);
+        api.laserControl(true);
+        try {
+            java.lang.Thread.sleep(400);
+        } catch(InterruptedException ex){
+            java.lang.Thread.currentThread().interrupt();
+        }
+
+        api.takeSnapshot();
+
+    }
+
+    private static double[] crossProduct(double[] a, double[] b) {
+        double[] output = {0,0,0};
+        output[0] = a[1] * b[2] - a[2] * b[1];
+        output[1] = a[2] * b[0] - a[0] * b[2];
+        output[2] = a[0] * b[1] - a[1] * b[0];
+        return output;
+    }
+
+    private Quaternion finalquaternionRotation(double[] forward, double[] up){
+        double[] vector = forward;
+        double[] vector2 = crossProduct(up,forward);
+        double[] vector3 = crossProduct(vector,vector2);
+
+        float m00 = (float)vector2[0];
+        float m01 = (float)vector2[1];
+        float m02 = (float)vector2[2];
+        float m10 = (float)vector3[0];
+        float m11 = (float)vector3[1];
+        float m12 = (float)vector3[2];
+        float m20 = (float)vector[0];
+        float m21 = (float)vector[1];
+        float m22 = (float)vector[2];
+        float num8 = (m00 + m11) + m22;
+
+        if (num8 > 0f){
+            float num = (float)Math.sqrt(num8 + 1f);
+            float nw = num * 0.5f;
+            num = 0.5f / num;
+            float nx = (m12 - m21) * num;
+            float ny = (m20 - m02) * num;
+            float nz = (m01 - m10) * num;
+            Quaternion quaternion = new Quaternion(nx,ny,nz,nw);
+            return quaternion;
+        }
+        if ((m00 >= m11) && (m00 >= m22)){
+            float num7 = (float)Math.sqrt(((1f + m00) - m11) - m22);
+            float num4 = 0.5f / num7;
+            float nx = 0.5f * num7;
+            float ny = (m01 + m10) * num4;
+            float nz = (m02 + m20) * num4;
+            float nw = (m12 - m21) * num4;
+            Quaternion quaternion = new Quaternion(nx,ny,nz,nw);
+            return quaternion;
+        }
+        if (m11 > m22){
+            float num6 = (float)Math.sqrt(((1f + m11) - m00) - m22);
+            float num3 = 0.5f / num6;
+            float nx = (m10+ m01) * num3;
+            float ny = 0.5f * num6;
+            float nz = (m21 + m12) * num3;
+            float nw = (m20 - m02) * num3;
+            Quaternion quaternion = new Quaternion(nx,ny,nz,nw);
+            return quaternion;
+        }
+        float num5 = (float)Math.sqrt(((1f + m22) - m00) - m11);
+        float num2 = 0.5f / num5;
+        float nx = (m20 + m02) * num2;
+        float ny = (m21 + m12) * num2;
+        float nz = 0.5f * num5;
+        float nw = (m01 - m10) * num2;
+        Quaternion quaternion = new Quaternion(nx,ny,nz,nw);
+        return quaternion;
+
+    }
+
+    private double[] readAR(double ay){
         Dictionary dictionary = Aruco.getPredefinedDictionary(Aruco.DICT_5X5_250);
 
         Bitmap bitmap = api.getBitmapNavCam();
@@ -172,7 +264,8 @@ public class YourService extends KiboRpcService {
         Log.d("AR height",Double.toString(ar_height));
         Log.d("AR center x ",Double.toString(AR_center_x));
         Log.d("AR center z",Double.toString(AR_center_z));
-        return true;
+        double[] forwardvector = forwardVector(AR_center_x,ay,AR_center_z);
+        return forwardvector;
     }
 
     private void movetoAdash(int ap,double ax, double ay, double az){
@@ -278,6 +371,30 @@ public class YourService extends KiboRpcService {
         return dist_Coeff;
 
     }
+
+
+    public static double[] forwardVector(double ar_centre_x,double ar_centre_y, double ar_centre_z) {
+        double[] la = { 0.1302 ,0.0572 ,-0.1111 };
+        double[] ac = { -0.1177 , 0.0422,0.0826 };
+        double[] ct = { ar_centre_x ,ar_centre_y ,ar_centre_z };
+
+        double[] result = add(la,ac);
+        double[] finalresult = add(result,ct);
+        System.out.println("vector sum: " + Arrays.toString(result));
+        return finalresult;
+        }
+    public static double[] add(double[] first, double[] second)
+    {
+        int length = first.length <second.length ? first.length : second.length;
+        double[] result = new double[length];
+        for (int i = 0; i < length; i++)
+        {
+            result[i] = first[i] + second[i];
+        }
+        return result;
+    }
+
+
 
 }
 
